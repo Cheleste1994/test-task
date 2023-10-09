@@ -20,7 +20,11 @@ body > div {
   overflow: hidden;
 }
 
-footer > div {
-  position: relative;
+footer {
+  box-shadow: 0px 35px 50px 0px #1E1E2E;
+  border-radius: 10px 10px 0 0;
 }
 
+.footer__icon * {
+  fill: red
+}

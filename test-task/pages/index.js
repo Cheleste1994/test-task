@@ -1,4 +1,5 @@
-import Image from 'next/image';
+import Footer from '../components/Footer/Footer';
+import Header from '../components/Header/Header';
 import { Inter } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -6,38 +7,17 @@ const inter = Inter({ subsets: ['latin'] });
 export default function Home() {
   return (
     <>
-      <header className='flex h-20 flex-nowrap justify-between'>
-        <div>icon</div>
-        <div>avatar</div>
-      </header>
-      <main className='grow'>
-        <div>Выберите действие</div>
-        <div>Login</div>
-        <div>Registration</div>
+      <Header />
+      <main className='flex grow flex-col px-[30px]'>
+        <div className='pl-[10px] text-2xl font-bold'>Выберите действие</div>
+        <div className='mt-[80px] flex h-[65px] flex-col justify-center bg-gradient-to-br from-[#FF8412] to-[#FFC543] text-center rounded-[50px] text-white'>
+          Login
+        </div>
+        <div className='mt-[20px] flex h-[65px] flex-col justify-center bg-gradient-to-br from-[#686DE0] to-[#4834D4] text-center rounded-[50px] text-white'>
+          Registration
+        </div>
       </main>
-      <footer className='flex h-20 flex-nowrap justify-evenly whitespace-nowrap'>
-        <div className='flex flex-col items-center justify-evenly'>
-          <Image src='/home.svg' width={26} height={24} alt='home' />
-          ראשי
-        </div>
-        <div className='flex flex-col items-center justify-evenly'>
-          <Image src='/credit.svg' width={21} height={17} alt='credit' />
-          מפות
-        </div>
-        <div className='flex flex-col items-center justify-evenly'>
-          <Image src='/transfers.svg' width={14} height={19} alt='transfers' />
-          תרגומים
-        </div>
-        <div className='flex flex-col items-center justify-evenly'>
-          <Image
-            src='/fundraising.svg'
-            width={22}
-            height={20}
-            alt='fundraising'
-          />
-          גיוס כספים
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }
