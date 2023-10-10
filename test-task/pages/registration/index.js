@@ -9,6 +9,7 @@ export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordRepeat, setPasswordRepeat] = useState('');
   const [checkbox, setCheckbox] = useState(false);
 
   const handleClickClosed = (route) => {
@@ -17,16 +18,14 @@ export default function Login() {
 
   const handleClickSubmit = async (event) => {
     event.preventDefault();
-    if (!email || !password || !checkbox) return;
+    if (!email || !password || password !== passwordRepeat || !checkbox)
+      return;
 
     try {
-      const data = await authorizationUser({ method: 'login', email, password });
+      const data = await authorizationUser({ method: 'user', email, password });
       if (data.ok) {
         localStorage.setItem('token', data.token)
-
-        router.push(`/users/${email}`);
-      } else {
-        console.error(data.errors);
+        handleClickClosed(`/users/${email}`);
       }
     } catch (error) {
       console.error(error);
@@ -36,19 +35,19 @@ export default function Login() {
   return (
     <div className={`min-h-screen bg-[url(/back.svg)] bg-cover`}>
       <main
-        className={`${styles.main} mx-[30px] mt-[47px] min-h-[590px] py-[60px] justify-between rounded-[35px] bg-gradient-to-b from-[#4936D4] to-[#6835D4] text-white`}
+        className={`${styles.main} mx-[30px] mt-[47px] min-h-[590px] justify-between rounded-[35px] bg-gradient-to-b from-[#4936D4] to-[#6835D4] py-[60px] text-white`}
       >
         <div className={styles.closed} onClick={() => handleClickClosed('/')}>
           <span />
           <span />
         </div>
-        <div className='text-center text-2xl font-bold'>Логин</div>
+        <div className='text-center text-2xl font-bold'>Регистрация</div>
         <form
-          className={`${styles.login} mt-[53px] mx-[40px] flex flex-col`}
+          className={`${styles.login} mx-[40px] mt-[53px] flex flex-col`}
           id='login__form'
           onSubmit={handleClickSubmit}
         >
-          <label htmlFor='email'>Ваше телефон</label>
+          <label htmlFor='email'>Ваша почта</label>
           <input
             type='email'
             id='email'
@@ -58,7 +57,13 @@ export default function Login() {
           />
           <label htmlFor='password' className='relative'>
             Пароль
-            <Image src='./eye.svg' width={15} height={15} alt='eye' className={`z-10 absolute top-[50px] right-[20px]`} />
+            <Image
+              src='./eye.svg'
+              width={15}
+              height={15}
+              alt='eye'
+              className={`absolute right-[20px] top-[50px] z-10`}
+            />
           </label>
           <input
             type='password'
@@ -66,6 +71,23 @@ export default function Login() {
             placeholder='*********'
             value={password}
             onChange={({ target }) => setPassword(target.value)}
+          />
+          <label htmlFor='password' className='relative'>
+            Подтвердите пароль
+            <Image
+              src='./eye.svg'
+              width={15}
+              height={15}
+              alt='eye'
+              className={`absolute right-[20px] top-[50px] z-10`}
+            />
+          </label>
+          <input
+            type='password'
+            name='password'
+            placeholder='*********'
+            value={passwordRepeat}
+            onChange={({ target }) => setPasswordRepeat(target.value)}
           />
           <Link href='/registration' className='my-[24px] text-xs opacity-75'>
             Забыли пароль?
@@ -94,7 +116,7 @@ export default function Login() {
           form='login__form'
           type='submit'
         >
-          Войти
+          Зарегистрироваться
         </button>
       </main>
     </div>
