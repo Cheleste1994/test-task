@@ -1,4 +1,5 @@
-import '@/styles/globals.css';
+import '@/styles/globals.scss';
+import '@/styles/cropper.scss';
 import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
 

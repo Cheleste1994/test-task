@@ -1,0 +1,20 @@
+.cropper {
+  border-radius: 12px;
+  background-color: #F3F5F5;
+
+  .cropper-wrap-box {
+    visibility: hidden;
+  }
+
+  .cropper-view-box {
+    border-radius: 50%;
+  }
+
+  .cropper-crop-box {
+
+    .cropper-face {
+      background-color: transparent;
+    }
+  }
+
+}
