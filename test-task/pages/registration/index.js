@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Image from 'next/image';
 import { authorizationUser } from '../api/api';
+import { redirectTo } from '@/components/helpers/redirectTo';
 
 export default function Login() {
   const router = useRouter();
@@ -11,23 +12,22 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
   const [checkbox, setCheckbox] = useState(false);
-
-  const handleClickClosed = (route) => {
-    router.push(route);
-  };
+  const [isRegister, setIsRegister] = useState(true);
 
   const handleClickSubmit = async (event) => {
     event.preventDefault();
-    if (!email || !password || password !== passwordRepeat || !checkbox)
-      return;
+    if (!email || !password || password !== passwordRepeat || !checkbox) return;
 
     try {
-      const data = await authorizationUser({ method: 'user', email, password });
+      const data = await authorizationUser({ url: '/user', email, password });
       if (data.ok) {
-        localStorage.setItem('token', data.token)
-        handleClickClosed(`/users/${email}`);
+        localStorage.setItem('token', data.token);
+        redirectTo(router, `/users/${email}`);
+      } else {
+        setIsRegister(false);
       }
     } catch (error) {
+      setIsRegister(false);
       console.error(error);
     }
   };
@@ -37,7 +37,7 @@ export default function Login() {
       <main
         className={`${styles.main} mx-[30px] mt-[47px] min-h-[590px] justify-between rounded-[35px] bg-gradient-to-b from-[#4936D4] to-[#6835D4] py-[60px] text-white`}
       >
-        <div className={styles.closed} onClick={() => handleClickClosed('/')}>
+        <div className={styles.closed} onClick={() => redirectTo(router, '/')}>
           <span />
           <span />
         </div>
@@ -118,6 +118,13 @@ export default function Login() {
         >
           Зарегистрироваться
         </button>
+        {isRegister ? (
+          ''
+        ) : (
+          <span className='p-[20px] text-center'>
+            Ошибка регистрации! Попробуйте снова.
+          </span>
+        )}
       </main>
     </div>
   );

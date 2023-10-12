@@ -2,27 +2,41 @@ import styles from '../../styles/main.module.scss';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import React, { useRef } from 'react';
-import Cropper, { ReactCropperElement } from 'react-cropper';
+import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-import { handleImageOnServer } from '../api/api';
+import { sendImageOnServer } from '../api/api';
+import { useSWRConfig } from 'swr';
+import { redirectTo } from '@/components/helpers/redirectTo';
 
 export default function Home() {
   const router = useRouter();
   const cropperRef = useRef(null);
   const fileInputRef = useRef(null);
-  const [image, setImage] = useState('');
-
+  const [image, setImage] = useState(null);
+  const [saveImage, setSaveImage] = useState(false);
+  const [isValidImage, setisValidImage] = useState(true);
+  const { mutate } = useSWRConfig();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
 
     if (file) {
+      const { type, size } = file;
+
+      if (
+        (type !== 'image/jpeg' &&
+          type !== 'image/jpg' &&
+          type !== 'image/gif' &&
+          type !== 'image/png') ||
+        size > 5 * 1024 * 1024
+      ) {
+        setisValidImage(false);
+        return;
+      }
+
+      setisValidImage(true);
       setImage(URL.createObjectURL(file));
     }
-  };
-
-  const handleClickBtn = (route) => {
-    router.push(route);
   };
 
   useEffect(() => {
@@ -33,26 +47,34 @@ export default function Home() {
       const currentTimestamp = Math.floor(Date.now() / 1000);
 
       if (decoded.exp && decoded.exp < currentTimestamp) {
-        handleClickBtn('/login');
+        redirectTo(router, '/login');
         localStorage.setItem('token', '');
       }
 
       if (decoded.email !== window.location.pathname.split('/').reverse()[0]) {
-        handleClickBtn('/login');
+        redirectTo(router, '/login');
       }
     } catch {
-      handleClickBtn('/login');
+      redirectTo(router, '/login');
     }
   }, []);
 
-
-  const handleSave = () => {
+  const handleSave = async () => {
     const cropper = cropperRef.current?.cropper;
-    const base64Image = cropper.getCroppedCanvas().toDataURL()
+    const base64Image = cropper.getCroppedCanvas().toDataURL();
     const token = localStorage.getItem('token');
 
     if (base64Image && token) {
-      handleImageOnServer('PUT', base64Image, token).then(console.log);
+      try {
+        await sendImageOnServer(base64Image, token);
+        mutate('account/image');
+        setImage(null);
+        setSaveImage(true);
+        setTimeout(() => setSaveImage(false), 5000);
+      } catch {
+        setSaveImage(false);
+        redirectTo(router, '/login');
+      }
     }
   };
 
@@ -71,9 +93,16 @@ export default function Home() {
             <span className='max-w-[252px] text-sm'>
               Загрузите файл размером до 5Мб <br /> По формату: JPG, PNG, GIF
             </span>
+            {isValidImage ? (
+              ''
+            ) : (
+              <span className='pt-[40px] text-center'>
+                Не верный формат. Выберите другое изображение!
+              </span>
+            )}
             <input
               type='file'
-              accept='image/*'
+              accept='.jpg, .gif, .png'
               style={{ display: 'none' }}
               ref={fileInputRef}
               onChange={handleFileChange}
@@ -128,6 +157,13 @@ export default function Home() {
               Отменить
             </button>
           </>
+        )}
+        {saveImage ? (
+          <div className={`${styles.save} bg-[#7fffd48e]`}>
+            Аватар сохранён!
+          </div>
+        ) : (
+          ''
         )}
       </main>
     </>

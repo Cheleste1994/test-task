@@ -112,3 +112,34 @@
     font-weight: 900;
   }
 }
+
+.save {
+  position: fixed;
+  right: 0;
+  bottom: -100px;
+  padding: 20px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.8;
+  border-radius: 10px;
+  animation: anima 5s ease-in-out;
+}
+
+@keyframes anima {
+  0% {
+    opacity: 0;
+    bottom: -100px;
+  }
+
+  50% {
+    opacity: 1;
+    bottom: 0px;
+  }
+
+  100% {
+    opacity: 0;
+    bottom: -100px;
+  }
+}
