@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+body > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  height: 100%;
+  max-width: 432px;
+  width: 100%;
+  overflow: hidden;
+}
+
+footer {
+  box-shadow: 0px 35px 50px 0px #1E1E2E;
+  border-radius: 10px 10px 0 0;
+
+  svg:hover,
+  svg:focus {
+    transform: scale(1.2);
+  }
+}
+
+header div img:hover,
+header div img:focus {
+  transform: scale(1.1);
+  cursor: pointer;
+}

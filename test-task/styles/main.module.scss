@@ -1,0 +1,163 @@
+.main {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  position: relative;
+
+  .closed {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    background-color: #ffc543;
+    border-radius: 100%;
+    top: -5px;
+    right: -5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s linear;
+
+    &:hover,
+    &:focus {
+      filter: contrast(2);
+    }
+
+    span {
+      width: 60%;
+      height: 1px;
+      background-color: black;
+
+      &:first-child {
+        transform: rotate(45deg);
+      }
+      &:last-child {
+        transform: rotate(-45deg);
+      }
+    }
+  }
+
+  > button {
+    height: 65px;
+    border-radius: 50px;
+    color: white;
+    transition: all 0.2s linear;
+    background-image: linear-gradient(
+      to bottom right,
+      var(--tw-gradient-stops)
+    );
+    font-weight: 500;
+
+    &:hover,
+    &:focus {
+      filter: contrast(2);
+    }
+  }
+
+  .login {
+
+    a:hover {
+      opacity: 0.5;
+    }
+
+    > input {
+      border-radius: 22px;
+      height: 47px;
+      color: black;
+      margin-top: 9px;
+      padding-left: 57px;
+      position: relative;
+      background-repeat: no-repeat;
+      background-position: 20px;
+
+      &:nth-of-type(1) {
+        margin-bottom: 22px;
+        background-image: url(../public/mobile.svg);
+      }
+
+      &:nth-of-type(2) {
+        background-image: url(../public/lock.svg);
+        padding-right: 40px;
+        margin-bottom: 22px;
+      }
+
+      &:nth-of-type(3) {
+        background-image: url(../public/lock.svg);
+        padding-right: 40px;
+      }
+    }
+  }
+
+
+  .checkbox {
+    display: inline-block;
+    min-width: 17px;
+    width: 17px;
+    min-height: 17px;
+    height: 17px;
+    border: 2px solid white;
+    text-align: center;
+    position: relative;
+    margin-top: 5px;
+  }
+
+  input:checked + .checkbox:after {
+    content: '✓';
+    position: absolute;
+    top: -3px;
+    left: 2px;
+    color: white;
+    font-size: 12px;
+    font-weight: 900;
+  }
+}
+
+.save {
+  position: fixed;
+  right: 0;
+  bottom: -100px;
+  padding: 20px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.8;
+  border-radius: 10px;
+  animation: anima 5s ease-in-out;
+}
+
+@keyframes anima {
+  0% {
+    opacity: 0;
+    bottom: -100px;
+  }
+
+  50% {
+    opacity: 1;
+    bottom: 0px;
+  }
+
+  100% {
+    opacity: 0;
+    bottom: -100px;
+  }
+}
+
+
+.svg {
+  animation: animaSvg 0.5s ease-in-out;
+  opacity: 1;
+  transform: scale(1);
+}
+
+@keyframes animaSvg {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
+}
