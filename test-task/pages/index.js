@@ -1,4 +1,3 @@
-import { Inter } from 'next/font/google';
 import styles from '../styles/main.module.scss';
 import { useRouter } from 'next/router';
 import { redirectTo } from '@/components/helpers/redirectTo';
