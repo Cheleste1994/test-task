@@ -1,29 +1,26 @@
 import Image from 'next/image';
 import HomeLogo from '../../public/home.svg';
+import CreditLogo from '../../public/credit.svg';
+import TransfersLogo from '../../public/transfers.svg';
+import FundraisingLogo from '../../public/fundraising.svg';
 
 export default function Footer() {
   return (
     <footer className='flex h-20 flex-nowrap justify-evenly whitespace-nowrap py-[10px]'>
-      <div className='flex flex-col items-center justify-between cursor-pointer'>
-        <Image src={HomeLogo} width={26} height={24} alt='home' className='footer__icon grow'/>
+      <div className='flex cursor-pointer flex-col items-center justify-between pt-[5px]'>
+        <HomeLogo />
         ראשי
       </div>
-      <div className='flex flex-col items-center justify-between cursor-pointer'>
-        <Image src='/credit.svg' width={21} height={17} alt='credit' className='grow'/>
+      <div className='flex cursor-pointer flex-col items-center justify-between pt-[5px]'>
+        <CreditLogo />
         מפות
       </div>
-      <div className='flex flex-col items-center justify-between cursor-pointer'>
-        <Image src='/transfers.svg' width={14} height={19} alt='transfers' className='grow'/>
+      <div className='flex cursor-pointer flex-col items-center justify-between pt-[5px]'>
+        <TransfersLogo />
         תרגומים
       </div>
-      <div className='flex flex-col items-center justify-between cursor-pointer'>
-        <Image
-          src='/fundraising.svg'
-          width={22}
-          height={20}
-          alt='fundraising'
-          className='grow'
-        />
+      <div className='flex cursor-pointer flex-col items-center justify-between pt-[5px]'>
+        <FundraisingLogo />
         גיוס כספים
       </div>
     </footer>

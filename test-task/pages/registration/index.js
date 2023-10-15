@@ -2,24 +2,36 @@ import styles from '../../styles/main.module.scss';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import Image from 'next/image';
 import { authorizationUser } from '../api/api';
 import { redirectTo } from '@/components/helpers/redirectTo';
+import ValidLogo from '../../public/ValidLogo.svg';
+import EyeLogo from '../../public/eye.svg';
 
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState({ value: '', valid: false });
   const [passwordRepeat, setPasswordRepeat] = useState('');
   const [checkbox, setCheckbox] = useState(false);
   const [isRegister, setIsRegister] = useState(true);
+  const [isEye, setIsEye] = useState(false);
 
   const handleClickSubmit = async (event) => {
     event.preventDefault();
-    if (!email || !password || password !== passwordRepeat || !checkbox) return;
+    if (
+      !email ||
+      !password.valid ||
+      password.value !== passwordRepeat ||
+      !checkbox
+    )
+      return;
 
     try {
-      const data = await authorizationUser({ url: '/user', email, password });
+      const data = await authorizationUser({
+        url: '/user',
+        email,
+        password: password.value,
+      });
       if (data.ok) {
         localStorage.setItem('token', data.token);
         redirectTo(router, `/users/${email}`);
@@ -57,33 +69,47 @@ export default function Login() {
           />
           <label htmlFor='password' className='relative'>
             Пароль
-            <Image
-              src='./eye.svg'
-              width={15}
-              height={15}
-              alt='eye'
-              className={`absolute right-[20px] top-[50px] z-10`}
+            {passwordRepeat ? (
+              <ValidLogo
+                className={`${styles.svg} vote absolute inline ${
+                  password.valid && password.value === passwordRepeat
+                    ? 'fill-[#46b450]'
+                    : 'fill-red-500'
+                }`}
+              />
+            ) : (
+              ''
+            )}
+            <EyeLogo
+              className={`absolute right-[20px] top-[50px] z-10 cursor-pointer ${
+                isEye ? 'fill-[#46b450]' : ''
+              }`}
+              onClick={() => setIsEye(!isEye)}
             />
           </label>
           <input
-            type='password'
+            type={isEye ? 'text' : 'password'}
             name='password'
             placeholder='*********'
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
+            value={password.value}
+            onChange={({ target }) => {
+              setPassword({
+                value: target.value,
+                valid: target.value.length >= 5 || false,
+              });
+            }}
           />
           <label htmlFor='password' className='relative'>
             Подтвердите пароль
-            <Image
-              src='./eye.svg'
-              width={15}
-              height={15}
-              alt='eye'
-              className={`absolute right-[20px] top-[50px] z-10`}
+            <EyeLogo
+              className={`absolute right-[20px] top-[50px] z-10 cursor-pointer ${
+                isEye ? 'fill-[#46b450]' : ''
+              }`}
+              onClick={() => setIsEye(!isEye)}
             />
           </label>
           <input
-            type='password'
+            type={isEye ? 'text' : 'password'}
             name='password'
             placeholder='*********'
             value={passwordRepeat}

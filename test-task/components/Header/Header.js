@@ -1,11 +1,14 @@
 import { fetcher } from '@/pages/api/api';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import useSWR from 'swr';
 import { redirectTo } from '../helpers/redirectTo';
 
 export default function Header() {
   const router = useRouter();
+  const [search, setSearch] = useState('');
+  const [isOpenSearch, setIsOpenSearch] = useState(false);
 
   const { data } = useSWR(`account/image`, fetcher, {
     revalidateOnMount: true,
@@ -17,13 +20,24 @@ export default function Header() {
         <Image src='/coins.png' width={30} height={47} alt='coins' />
         CoinsFill
       </div>
-      <div className='flex flex-nowrap items-center gap-1' >
+      <div className='flex items-center gap-1'>
+        {isOpenSearch ? (
+          <input
+            type='text'
+            className='max-w-[100px] pl-[3px]'
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        ) : (
+          ''
+        )}
         <Image
           src='/search.svg'
           width={20}
           height={20}
           alt='search'
           className='pt-[5px]'
+          onClick={() => setIsOpenSearch(!isOpenSearch)}
         />
         <Image
           src={`${data?.image || '/avatar.png'}`}
@@ -32,8 +46,8 @@ export default function Header() {
           height={24}
           alt='avatar'
           onClick={() => {
-            localStorage.setItem('token', '')
-            redirectTo(router, '/')
+            localStorage.setItem('token', '');
+            redirectTo(router, '/');
           }}
         />
       </div>
