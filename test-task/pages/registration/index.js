@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { authorizationUser } from '../api/api';
 import { redirectTo } from '@/components/helpers/redirectTo';
-import ValidLogo from '../../public/ValidLogo.svg';
+import ValidLogo from '../../public/validLogo.svg';
 import EyeLogo from '../../public/eye.svg';
 
 export default function Login() {
